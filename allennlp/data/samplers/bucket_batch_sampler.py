@@ -1,12 +1,12 @@
 import logging
 import math
 from typing import List, Iterable, Tuple, Sequence, Optional
-import random
 
 from allennlp.common.checks import ConfigurationError
 from allennlp.common.util import lazy_groups_of
 from allennlp.data.instance import Instance
 from allennlp.data.samplers.batch_sampler import BatchSampler
+import secrets
 
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 def add_noise_to_value(value: int, noise_param: float):
     noise_value = value * noise_param
-    noise = random.uniform(-noise_value, noise_value)
+    noise = secrets.SystemRandom().uniform(-noise_value, noise_value)
     return value + noise
 
 
@@ -122,7 +122,7 @@ class BucketBatchSampler(BatchSampler):
                 continue
             batches.append(batch_indices)
         if self.shuffle:
-            random.shuffle(batches)
+            secrets.SystemRandom().shuffle(batches)
         for batch in batches:
             yield batch
 

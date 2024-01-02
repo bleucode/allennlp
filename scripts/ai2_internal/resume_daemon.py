@@ -28,7 +28,6 @@ import argparse
 import json
 import logging
 import os
-import random
 import sqlite3
 import subprocess
 import time
@@ -36,6 +35,7 @@ from enum import Enum
 from logging.handlers import RotatingFileHandler
 from sqlite3 import Connection
 from subprocess import PIPE
+import secrets
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -227,7 +227,7 @@ class Action(Enum):
 
 def main(args) -> None:
     # Smooth load from potentially many daemons on different machines.
-    time.sleep(random.randint(0, args.random_delay_seconds))
+    time.sleep(secrets.SystemRandom().randint(0, args.random_delay_seconds))
 
     db_path = f"{dot_allennlp_dir}/resume.db"
     connection = sqlite3.connect(db_path)

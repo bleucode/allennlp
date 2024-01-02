@@ -9,7 +9,6 @@ import json
 import logging
 import os
 import pkgutil
-import random
 import sys
 import signal
 from contextlib import contextmanager
@@ -42,6 +41,7 @@ import base58
 
 from allennlp.common.checks import log_pytorch_version_info
 from allennlp.common.params import Params
+import secrets
 
 try:
     import resource
@@ -205,7 +205,7 @@ def add_noise_to_dict_values(dictionary: Dict[A, float], noise_param: float) -> 
     new_dict = {}
     for key, value in dictionary.items():
         noise_value = value * noise_param
-        noise = random.uniform(-noise_value, noise_value)
+        noise = secrets.SystemRandom().uniform(-noise_value, noise_value)
         new_dict[key] = value + noise
     return new_dict
 
@@ -243,7 +243,7 @@ def prepare_environment(params: Params):
     torch_seed = params.pop_int("pytorch_seed", 133)
 
     if seed is not None:
-        random.seed(seed)
+        secrets.SystemRandom().seed(seed)
     if numpy_seed is not None:
         numpy.random.seed(numpy_seed)
     if torch_seed is not None:
@@ -695,7 +695,6 @@ def nan_safe_tensor_divide(numerator, denominator):
 
 
 def shuffle_iterable(i: Iterable[T], pool_size: int = 1024) -> Iterable[T]:
-    import random
 
     i = iter(i)
     pool = []
@@ -708,7 +707,7 @@ def shuffle_iterable(i: Iterable[T], pool_size: int = 1024) -> Iterable[T]:
 
     # play in it
     while len(pool) > 0:
-        index = random.randrange(len(pool))
+        index = secrets.SystemRandom().randrange(len(pool))
         yield pool[index]
         try:
             pool[index] = next(i)
@@ -717,7 +716,7 @@ def shuffle_iterable(i: Iterable[T], pool_size: int = 1024) -> Iterable[T]:
             break
 
     # drain it
-    random.shuffle(pool)
+    secrets.SystemRandom().shuffle(pool)
     yield from pool
 
 

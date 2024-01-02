@@ -1,5 +1,4 @@
 import itertools
-import random
 from collections import OrderedDict
 from typing import NamedTuple, Optional, List, Tuple
 
@@ -10,6 +9,7 @@ import torchvision
 import torchvision.ops.boxes as box_ops
 
 from allennlp.common import Registrable
+import secrets
 
 
 class RegionDetectorOutput(NamedTuple):
@@ -78,7 +78,7 @@ class RandomRegionDetector(RegionDetector):
 
     def __init__(self, seed: Optional[int] = None):
         super().__init__()
-        self.random = random.Random(seed)
+        self.random = secrets.SystemRandom().Random(seed)
 
     def _seeded_random_tensor(self, *shape: int, device) -> torch.FloatTensor:
         """PyTorch's random functions can't take a random seed. There is only one global

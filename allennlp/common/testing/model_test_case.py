@@ -1,7 +1,6 @@
 import copy
 import json
 from os import PathLike
-import random
 from typing import Any, Dict, Iterable, Set, Union
 
 import torch
@@ -17,6 +16,7 @@ from allennlp.data.batch import Batch
 from allennlp.models import load_archive, Model
 from allennlp.training import GradientDescentTrainer
 from allennlp.confidence_checks.normalization_bias_verification import NormalizationBiasVerification
+import secrets
 
 
 class ModelTestCase(AllenNlpTestCase):
@@ -33,7 +33,7 @@ class ModelTestCase(AllenNlpTestCase):
         seed: int = None,
     ):
         if seed is not None:
-            random.seed(seed)
+            secrets.SystemRandom().seed(seed)
             numpy.random.seed(seed)
             torch.manual_seed(seed)
 
@@ -154,7 +154,7 @@ class ModelTestCase(AllenNlpTestCase):
         data_loader_params2 = Params(copy.deepcopy(data_loader_params.as_dict()))
 
         if seed is not None:
-            random.seed(seed)
+            secrets.SystemRandom().seed(seed)
             numpy.random.seed(seed)
             torch.manual_seed(seed)
 
@@ -165,7 +165,7 @@ class ModelTestCase(AllenNlpTestCase):
         data_loader.index_with(model.vocab)
 
         if seed is not None:
-            random.seed(seed)
+            secrets.SystemRandom().seed(seed)
             numpy.random.seed(seed)
             torch.manual_seed(seed)
 

@@ -1,7 +1,7 @@
 import bisect
-import random
 from collections import abc
 from typing import Sequence, Optional, Union
+import secrets
 
 
 class ShuffledSequence(abc.Sequence):
@@ -17,7 +17,7 @@ class ShuffledSequence(abc.Sequence):
         self.indices: Sequence[int]
         if indices is None:
             self.indices = list(range(len(inner_sequence)))
-            random.shuffle(self.indices)
+            secrets.SystemRandom().shuffle(self.indices)
         else:
             self.indices = indices
 

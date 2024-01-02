@@ -1,10 +1,10 @@
 import logging
-import random
 from typing import List, Iterable, Iterator, TypeVar, Sequence
 
 from allennlp.data.instance import Instance
 from allennlp.data.samplers.batch_sampler import BatchSampler
 from allennlp.data.samplers.bucket_batch_sampler import BucketBatchSampler
+import secrets
 
 
 logger = logging.getLogger(__name__)
@@ -102,7 +102,7 @@ class MaxTokensBatchSampler(BucketBatchSampler):
         group_iterator = self._lazy_groups_of_max_size(indices, max_lengths)
 
         batches = [list(group) for group in group_iterator]
-        random.shuffle(batches)
+        secrets.SystemRandom().shuffle(batches)
         for batch in batches:
             yield batch
 

@@ -1,5 +1,4 @@
 import math
-import random
 from typing import Optional, List, Iterator
 
 
@@ -13,6 +12,7 @@ from allennlp.data.dataset_readers import DatasetReader
 from allennlp.data.instance import Instance
 from allennlp.data.vocabulary import Vocabulary
 import allennlp.nn.util as nn_util
+import secrets
 
 
 @DataLoader.register("simple", constructor="from_dataset_reader")
@@ -59,7 +59,7 @@ class SimpleDataLoader(DataLoader):
 
     def _iter_batches(self) -> Iterator[TensorDict]:
         if self.shuffle:
-            random.shuffle(self.instances)
+            secrets.SystemRandom().shuffle(self.instances)
         for batch in lazy_groups_of(self.iter_instances(), self.batch_size):
             tensor_dict = self.collate_fn(batch)
             if self.cuda_device is not None:

@@ -2,7 +2,6 @@ from collections import deque
 import logging
 from multiprocessing.process import BaseProcess
 from multiprocessing.connection import Connection
-import random
 import traceback
 import select
 from queue import Full
@@ -22,6 +21,7 @@ from allennlp.data.fields import TextField
 from allennlp.data.samplers import BatchSampler
 from allennlp.data.vocabulary import Vocabulary
 import allennlp.nn.util as nn_util
+import secrets
 
 
 logger = logging.getLogger(__name__)
@@ -652,7 +652,7 @@ class MultiProcessDataLoader(DataLoader):
                     # At this point we've already loaded the instances in memory and indexed them,
                     # so this won't take long.
                     instance_iterator = list(instance_iterator)
-                    random.shuffle(instance_iterator)
+                    secrets.SystemRandom().shuffle(instance_iterator)
 
             for batch in lazy_groups_of(instance_iterator, self.batch_size):
                 if self.drop_last and len(batch) < self.batch_size:
