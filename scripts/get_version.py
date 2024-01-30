@@ -20,12 +20,12 @@ def get_current_version() -> str:
 
 
 def get_latest_version() -> str:
-    resp = requests.get("https://api.github.com/repos/allenai/allennlp/tags")
+    resp = requests.get("https://api.github.com/repos/allenai/allennlp/tags", timeout=60)
     return resp.json()[0]["name"]
 
 
 def get_stable_version() -> str:
-    resp = requests.get("https://api.github.com/repos/allenai/allennlp/releases/latest")
+    resp = requests.get("https://api.github.com/repos/allenai/allennlp/releases/latest", timeout=60)
     return resp.json()["tag_name"]
 
 

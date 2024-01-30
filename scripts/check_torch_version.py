@@ -30,7 +30,7 @@ def _get_current_installed_torch_version() -> Tuple[str, str, str]:
 def _get_latest_torch_version() -> Tuple[str, str, str]:
     import requests
 
-    r = requests.get("https://api.github.com/repos/pytorch/pytorch/tags")
+    r = requests.get("https://api.github.com/repos/pytorch/pytorch/tags", timeout=60)
     assert r.ok
     for tag_data in r.json():
         tag = tag_data["name"]
