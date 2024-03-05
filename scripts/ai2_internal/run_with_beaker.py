@@ -48,7 +48,7 @@ def main(param_file: str, args: argparse.Namespace):
         env[k] = str(v)
 
     # If the git repository is dirty, add a random hash.
-    result = subprocess.run("git diff-index --quiet HEAD --", shell=True)
+    result = subprocess.run("git diff-index --quiet HEAD --", shell=False)
     if result.returncode != 0:
         dirty_hash = "%x" % random_int
         docker_image += "-" + dirty_hash
@@ -58,16 +58,16 @@ def main(param_file: str, args: argparse.Namespace):
         print(f"Using the specified image: {image}")
     else:
         print(f"Building the Docker image ({docker_image})...")
-        subprocess.run(f"docker build -t {docker_image} .", shell=True, check=True)
+        subprocess.run(f"docker build -t {docker_image} .", shell=False, check=True)
 
         print("Create a Beaker image...")
         image = subprocess.check_output(
-            f"beaker image create --quiet {docker_image}", shell=True, universal_newlines=True
+            f"beaker image create --quiet {docker_image}", shell=False, universal_newlines=True
         ).strip()
         print(f"  Image created: {docker_image}")
 
     config_dataset_id = subprocess.check_output(
-        f"beaker dataset create --quiet {params_dir}/*", shell=True, universal_newlines=True
+        f"beaker dataset create --quiet {params_dir}/*", shell=False, universal_newlines=True
     ).strip()
 
     # Arguments that differ between preemptible and regular machine execution.
