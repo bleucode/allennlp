@@ -96,7 +96,7 @@ class SingleIdTokenIndexer(TokenIndexer):
     def _get_feature_value(self, token: Token) -> str:
         text = getattr(token, self._feature_name)
         if text is None:
-            if self._default_value is not _DEFAULT_VALUE:
+            if self._default_value != _DEFAULT_VALUE:
                 text = self._default_value
             else:
                 raise ValueError(
